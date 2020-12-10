@@ -35,82 +35,6 @@ class MyApp extends StatelessWidget {
 }
 
 
-class ZoomInOutAnimation extends StatefulWidget {
-
-
-  @override
-  ZoomInOutState createState() => ZoomInOutState();
-}
-
-class ZoomInOutState extends State<ZoomInOutAnimation>
-    with TickerProviderStateMixin {
-  AnimationController _breathingController;
-  var _breathe = 0.0;
-  AnimationController _angleController;
-  var _angle = 0.0;
-
-  @override
-  void initState() {
-    super.initState();
-    _breathingController = AnimationController(
-        vsync: this, duration: Duration(milliseconds: 1000));
-    _breathingController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _breathingController.reverse();
-      } else if (status == AnimationStatus.dismissed) {
-        _breathingController.forward();
-      }
-    });
-    _breathingController.addListener(() {
-      setState(() {
-        _breathe = _breathingController.value;
-      });
-    });
-    _breathingController.forward(from: 2.0);
-  }
-
-  @override
-  void dispose() {
-    _breathingController.dispose();
-    _angleController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    double _cut_factor = (10.0 * 2) as double;
-    final size = 100.0 - _cut_factor * _breathe;
-    return
-    Padding(
-        padding: EdgeInsets.all(0),
-        child: Container(
-          width: size,
-          height: size,
-          child: Transform.rotate(
-            angle: 0, //45 degree in radius
-            child: Material(
-                borderRadius: BorderRadius.circular(size / 3),
-                child: Container(
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.02,
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .height * 0.02,
-                    child: Image.asset(
-                      "assets/images/logo.png",
-                      fit: BoxFit.fill,
-                    ))
-            ),
-          ),
-        ),
-      );
-
-  }
-
-}
 
 
 class MyHomePage extends StatefulWidget {
@@ -162,7 +86,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.of(context).push(
                       PageRouteBuilder(
                         opaque: false, // set to false
-                        pageBuilder: (_, __, ___) => SecondPage(),
+                        pageBuilder: (_, __, ___) => OpaqueScreen(),
                       ),
                     );
                     // TransparentRoute(builder: (BuildContext context) => SecondPage());
@@ -178,12 +102,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class SecondPage extends StatefulWidget {
+class OpaqueScreen extends StatefulWidget {
+
+
   @override
-  _SecondPageState createState() => _SecondPageState();
+  _OpaqueScreenState createState() => _OpaqueScreenState();
 }
 
-class _SecondPageState extends State<SecondPage>
+class _OpaqueScreenState extends State<OpaqueScreen>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation _animation;
@@ -226,7 +152,6 @@ class _SecondPageState extends State<SecondPage>
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-
               Container(
                   height: 120,
                   width: 120,
@@ -245,4 +170,78 @@ class _SecondPageState extends State<SecondPage>
   }
 }
 
+class ZoomInOutAnimation extends StatefulWidget {
+  @override
+  ZoomInOutState createState() => ZoomInOutState();
+}
+
+class ZoomInOutState extends State<ZoomInOutAnimation>
+    with TickerProviderStateMixin {
+  AnimationController _breathingController;
+  var _breathe = 0.0;
+  AnimationController _angleController;
+  var _angle = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _breathingController = AnimationController(
+        vsync: this, duration: Duration(milliseconds: 1000));
+    _breathingController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _breathingController.reverse();
+      } else if (status == AnimationStatus.dismissed) {
+        _breathingController.forward();
+      }
+    });
+    _breathingController.addListener(() {
+      setState(() {
+        _breathe = _breathingController.value;
+      });
+    });
+    _breathingController.forward(from: 2.0);
+  }
+
+  @override
+  void dispose() {
+    _breathingController.dispose();
+    _angleController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    double _cut_factor = (10.0 * 2) as double;
+    final size = 100.0 - _cut_factor * _breathe;
+    return
+      Padding(
+        padding: EdgeInsets.all(0),
+        child: Container(
+          width: size,
+          height: size,
+          child: Transform.rotate(
+            angle: 0, //45 degree in radius
+            child: Material(
+                borderRadius: BorderRadius.circular(size / 3),
+                child: Container(
+                    height: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.02,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .height * 0.02,
+                    child: Image.asset(
+                      "assets/images/logo.png",
+                      fit: BoxFit.fill,
+                    ))
+            ),
+          ),
+        ),
+      );
+
+  }
+
+}
 
